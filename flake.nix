@@ -1,21 +1,17 @@
 {
-	description = "nixos";
-	inputs = {
-		nixpkgs.url = "nixpkgs/nixos-unstable";
-	};
+  description = "A very basic flake";
 
-	outputs = {
-		self,
-		nixpkgs,
-		...
-	}@inputs:
-	{
-		nixosConfiguration.nixos = nixpkgs.lib.nixosSystem {
-			system = "x84_64-linux";
-			modules = [
-				./configuration.nix
-				];
-				
-			};
-		};
-	}
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  };
+
+  outputs ={self, nixpkgs, ...}: {
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+	system = "x86_64-linux";
+	modules = [
+		./configuration.nix
+		];
+
+  };
+};
+}

@@ -87,10 +87,7 @@
     isNormalUser = true;
     description = "Noelle Savciuc";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      kdePackages.kate
     #  thunderbird
-    ];
   };
 
   # Install firefox.
@@ -108,7 +105,7 @@
 	discord
 	wineWow64Packages.stable
 	winetricks
-	pkgs.onlyoffice-desktopeditors
+	onlyoffice-desktopeditors
 	distrobox
 	podman
 	jdk
