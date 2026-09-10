@@ -27,10 +27,10 @@
           defaults = {
             file_ignore_patterns = [
               # NOTE this uses lua pattern matching, not regex
-              "^.git/"
+              "^./.git/"
               "*.tscn$"
               "*.gd.uid$"
-              "^target/"
+              "^./target/"
             ];
           };
           pickers = {

@@ -2,13 +2,18 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -46,10 +51,9 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
   services.xserver.libinput = {
-	enable = true;
-	touchpad.naturalScrolling = true;
-  };  
-
+    enable = true;
+    touchpad.naturalScrolling = true;
+  };
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -86,7 +90,10 @@
   users.users."noelles" = {
     isNormalUser = true;
     description = "Noelle Savciuc";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     #  thunderbird
   };
 
@@ -97,39 +104,45 @@
   nixpkgs.config.allowUnfree = true;
 
   virtualisation.podman = {
-	enable = true;
-	dockerCompat = true; 
+    enable = true;
+    dockerCompat = true;
   };
 
+  hardware.bluetooth.enable = true;
+
+  fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+
   environment.systemPackages = with pkgs; [
-	discord
-	wineWow64Packages.stable
-	winetricks
-	onlyoffice-desktopeditors
-	distrobox
-	podman
-	jdk
-	git
-	rustc
-	cargo
-	gcc
-	vscode
-	clippy
+    discord
+    wineWow64Packages.stable
+    winetricks
+    onlyoffice-desktopeditors
+    distrobox
+    podman
+    jdk
+    git
+    rustc
+    cargo
+    gcc
+    vscode
+    clippy
+    pwvucontrol
+    kitty
   ];
 
   networking.firewall.allowedTCPPorts = [
-	8080
+    8080
   ];
 
   nix.settings.experimental-features = [
-	"nix-command"
-	"flakes"
+    "nix-command"
+    "flakes"
   ];
 
   programs.steam = {
-	enable = true;
-	remotePlay.openFirewall = true;
-	dedicatedServer.openFirewall = true;
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
   };
 
   # List packages installed in system profile.
