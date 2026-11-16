@@ -10,8 +10,8 @@
   home.homeDirectory = "/home/noelles";
   home.stateVersion = "26.05";
 
-  imports = [
-    ./nixvim.nix
+  home.pkgs = with pkgs; [
+    inputs.nixvim-config.packages.${pkgs.system}.default
   ];
   programs.bash = {
     enable = true;
@@ -19,7 +19,7 @@
       rebuild = "sudo nixos-rebuild switch --flake /home/noelles/.config/nixos/";
       update = "sudo nix flake update --flake /home/noelles/.config/nixos/";
       dawson-vpn = "sudo openfortivpn -c ~/.config/nixos/vpn-config.txt --saml-login";
-
+      consume = "sudo nix-collect-garbage && nix-collect-garbage";
     };
   };
   home.packages = with pkgs; [
