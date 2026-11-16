@@ -24,6 +24,7 @@
       };
       # TypeScript / JavaScript language server
       ts_ls.enable = true;
+      eslint.enable = true;
       # R language server
       # package = null: relies on R (with languageserver) provided by the project's R flake
       r_language_server = {
@@ -99,6 +100,16 @@
         ];
       };
       lua_ls.enable = true;
+    };
+  };
+  plugins = {
+    treesitter = {
+      enable = true;
+      settings.ensure_installed = [
+        "javascript"
+        "typescript"
+        "tsx"
+      ];
     };
   };
 }

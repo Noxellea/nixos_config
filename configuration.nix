@@ -6,14 +6,45 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
-
 {
+  nixpkgs = {
+    config.allowUnfreePredicate =
+      pkg:
+      builtins.elem (pkgs.lib.getName pkg) [
+        "spotify"
+        "spotify-spotx"
+      ];
+    overlays = [
+      inputs.spotx-nix.overlays.default
+    ];
+  };
+
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+  nix.settings = {
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+
+    # Required so non-root users are allowed to use the above substituter/keys.
+    # Use @wheel for all sudo users, or list your username explicitly.
+    trusted-users = [
+      "root"
+      "@wheel"
+    ];
+  };
+  programs.hyprland = {
+    enable = true;
+    #xwayland.enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -113,6 +144,8 @@
   fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
 
   environment.systemPackages = with pkgs; [
+    kdePackages.spectacle
+    quickshell
     discord
     wineWow64Packages.stable
     winetricks
@@ -121,18 +154,33 @@
     podman
     jdk
     git
-    rustc
+    github-desktop
     cargo
     gcc
     vscode
-    clippy
     pwvucontrol
     kitty
+    rustup
+    godot
+    vmware-workstation
+    (spotify-spotx.override {
+      spotxArgs = [ "--hide" ];
+    })
+    nasm
+    openfortivpn
+    (vscode-with-extensions.override {
+      vscodeExtensions = with vscode-extensions; [
+        (builtins.getAttr "13xforever" vscode-extensions).language-x86-64-assembly
+        formulahendry.code-runner
+      ];
+    })
   ];
 
   networking.firewall.allowedTCPPorts = [
     8080
   ];
+
+  programs.nix-ld.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"
