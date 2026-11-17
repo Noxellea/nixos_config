@@ -10,9 +10,6 @@
   home.homeDirectory = "/home/noelles";
   home.stateVersion = "26.05";
 
-  home.pkgs = with pkgs; [
-    inputs.nixvim-config.packages.${pkgs.system}.default
-  ];
   programs.bash = {
     enable = true;
     shellAliases = {
@@ -23,6 +20,7 @@
     };
   };
   home.packages = with pkgs; [
+    inputs.nixvim-config.packages.${pkgs.system}.default
     github-desktop
   ];
   programs.git = {
@@ -33,8 +31,6 @@
         email = "lesixxalive@gmail.com";
       };
       init.defaultBranch = "main";
-    };
-    extraConfig = {
       filer.lfs = {
         clean = "git-lfs clean -- %f";
         smudge = "git-lfs smudge -- %f";
@@ -44,7 +40,9 @@
       pull.rebase = false;
       push.autoSetupRemote = true;
     };
+
   };
+
   programs.starship = {
     enable = true;
     enableBashIntegration = true;

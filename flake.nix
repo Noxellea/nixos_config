@@ -2,10 +2,17 @@
   description = "A very basic flake";
 
   nixConfig = {
-    extra-substituters = [ "https://nyxintimenixvim.cachix.org" ];
-    extra-trusted-substituters = [ "https://nyxintimenixvim.cachix.org" ];
+    extra-substituters = [
+      "https://nyxintimenixvim.cachix.org"
+      "https://hyprland.cachix.org"
+    ];
+    extra-trusted-substituters = [
+      "https://nyxintimenixvim.cachix.org"
+      "https://hyprland.cachix.org"
+    ];
     extra-trusted-public-keys = [
       "nyxintimenixvim.cachix.org-1:mQD2kN5KuO9yCNxDaoGCKtpm8MJiZGzdnRHwYSYNW3Q="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     ];
 
     trusted-users = [
@@ -25,7 +32,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "git+https://github.com/hyprwm/hyprland";
+    hyprland.url = "github:hyprwm/Hyprland";
     nixvim-config.url = "github:NyxInTime/nixvim-config";
   };
 
@@ -49,7 +56,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
 
-              #extraSpecialArgs = { inherit inputs; };
+              extraSpecialArgs = { inherit inputs; };
 
               users.noelles = import ./home.nix;
 
