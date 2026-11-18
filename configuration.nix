@@ -155,6 +155,7 @@
 
   environment.systemPackages = with pkgs; [
     kdePackages.spectacle
+    rar
     quickshell
     discord
     wineWow64Packages.stable
