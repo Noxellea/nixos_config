@@ -173,6 +173,7 @@
     kitty
     rustup
     godot
+    bitwarden-desktop
     vmware-workstation
     (spotify-spotx.override {
       spotxArgs = [ "--hide" ];
